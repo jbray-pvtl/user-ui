@@ -1,3 +1,21 @@
-<p>
-  user-list works!
-</p>
+<ul>
+  <li class="userlist">
+    <div class="row">
+      <div class="col-md-2">ID</div>
+      <div class="col-md-3">First Name</div>
+      <div class="col-md-3">Last Name</div>
+      <div class="col-md-2">Username</div>
+      <div class="col-md-2">Controls</div>
+    </div>
+  </li>
+  <li class="userlist" *ngFor="let user of users; let i = index">
+    <div class="row">
+      <div class="col-md-2">{{ user.id }}</div>
+      <div class="col-md-3">{{ user.firstname }}</div>
+      <div class="col-md-3">{{ user.lastname }}</div>
+      <div class="col-md-2">{{ user.username }}</div>
+      <div class="col-md-1"><button class="btn btn-warning" (click)="onEditUser(user.id)">Edit</button></div>
+      <div class="col-md-1"><button class="btn btn-danger" (click)="onDeleteUser(user.id)">X</button></div>
+    </div>
+  </li>
+</ul>
