@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { User } from '../user.model';
@@ -12,12 +12,13 @@ import { UserService } from '../user.service';
 export class UserListComponent implements OnInit, OnDestroy {
   usersObservable: Observable<User[]>;
   userSubscription: Subscription;
-  users;
+  @Input() users: User[];
 
   constructor(private userService: UserService) { }
 
   ngOnInit() {
     //this.users = this.userService.users;
+    this.onGetAllUsers();
     this.userService.getAllUsers();
     this.userSubscription = this.userService.usersObservable.subscribe();
     this.usersObservable = this.userService.usersObservable;
@@ -29,12 +30,26 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   onDeleteUser(id: string) {
     console.info("deleting user " + id);
-    this.userService.deleteUser(id);
+    this.userService.deleteUser(id).subscribe(
+      data => {
+        console.info(data);
+        this.onGetAllUsers();
+      },
+      error => {
+        console.error('Deletion error on ' + id);
+      }
+    );
   }
 
   onGetAllUsers() {
     console.info("getting all users...");
-    this.userService.getAllUsers();
+    this.userSubscription = this.userService.getAllUsers().subscribe(
+      (data: any) => {
+        this.userService.users = data;
+        this.users = this.userService.users;
+        console.info(this.users);
+      }
+    );
   }
 
   ngOnDestroy() {

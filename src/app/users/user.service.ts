@@ -12,30 +12,14 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  addUser(user: User) {
+  addUser(fname: string, lname: string, uname: string) {
     console.info("service.addUser(user)...");
-    this.users.push(user);
-    this.httpClient.post(this.rootURL + '/user/jane/doe/janedoe', {}).subscribe(
-      data => {
-        console.info(data);
-      },
-      error => {
-        console.error('An error occurred while attempting to save a new user:' + error);
-      }
-    );
-    this.getAllUsers();
+    return this.httpClient.post(this.rootURL + '/user/' + fname + '/' + lname + '/' + uname, {});
   }
 
   deleteUser(id: string) {
     console.info("service.deleteUser(id)...");
-    this.httpClient.delete(this.rootURL + '/user/' + id).subscribe(
-      data => {
-        console.info(data);
-      },
-      error => {
-        console.error('Deletion error on ' + id);
-      }
-    );
+    return this.httpClient.delete(this.rootURL + '/user/' + id);
   }
 
   getUser(id: string) {
@@ -43,9 +27,9 @@ export class UserService {
   }
 
   getAllUsers() {
-    
     console.info("getAllUsers()...");
     this.usersObservable = this.httpClient.get<User[]>(this.rootURL + '/users');
+    return this.usersObservable;
   }
 
 }
