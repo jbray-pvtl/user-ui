@@ -11,6 +11,8 @@ export class UserService {
   usersSubject = new BehaviorSubject<User[]>([]);
   usersObservable = this.usersSubject.asObservable();
   users: User[] = [];
+  selectedUserSubject = new Subject<User>();
+  selectedUserObservable = this.selectedUserSubject.asObservable();
   selectedUser: User;
   rootURL = 'https://jbray-user.cfapps.io'; //'http://localhost:8080';
 

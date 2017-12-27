@@ -15,6 +15,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   numberOfUsers: number;
   usersSubscription: Subscription;
   users: User[];
+  selectedUser: User;
 
   constructor(private userService: UserService) {
     this.userService.usersObservable.subscribe(
@@ -24,6 +25,14 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
       error => {
         console.error(error);
+      }
+    );
+    this.userService.selectedUserObservable.subscribe(
+      user => {
+        this.selectedUser = user;
+      },
+      error => {
+        console.error('User not found! ' + error);
       }
     );
   }
