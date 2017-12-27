@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { NgForm } from '@angular/forms';
 
 import { UserService } from './user.service';
 import { User } from './user.model';
@@ -12,53 +13,27 @@ import { User } from './user.model';
 export class UsersComponent implements OnInit, OnDestroy {
 
   numberOfUsers: number;
-  firstname: string;
-  lastname: string;
-  username: string;
   usersSubscription: Subscription;
   users: User[];
 
-  constructor(private userService: UserService) { }
-
-  ngOnInit() {
-    this.onGetAllUsers();
-    this.numberOfUsers = this.userService.users.length;
-  }
-
-  /**
-   * Send a request to the service to add a new user
-   */
-  onAddUser() {
-    console.info("onAddUser()...");
-    let id = this.generateRandomId();
-    if(this.username === undefined) {
-      this.username = (this.firstname + this.lastname).toLowerCase();
-    }
-    let user = new User(id,this.firstname,this.lastname,this.username);
-    this.userService.addUser(this.firstname, this.lastname, this.username).subscribe(
+  constructor(private userService: UserService) {
+    this.userService.usersObservable.subscribe(
       data => {
-        console.info(data);
-        this.onGetAllUsers();
+        this.users = data;
+        this.numberOfUsers = this.users.length;
       },
       error => {
-        console.error('An error occurred while attempting to save a new user:' + error);
+        console.error(error);
       }
     );
   }
 
-  private generateRandomId() {
-    let randomId: string = Math.random().toString(36).slice(2);
-    return randomId;
-  }
-
-  onGetAllUsers() {
-    console.info("getting all users...");
-    this.usersSubscription = this.userService.getAllUsers().subscribe(
-      (data: any) => {
-        this.userService.users = data;
-        this.users = this.userService.users;
-        console.info(data);
-      }
+  ngOnInit() {
+    this.usersSubscription = this.userService.usersObservable.subscribe(
+      data => {
+        this.users = data;
+      },
+      error => {}
     );
   }
 

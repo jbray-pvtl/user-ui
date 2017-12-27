@@ -1,4 +1,4 @@
-<form ngForm #userEditForm>
+<form ngForm #userForm>
   <div class="row">
     <div class="col-md-4">
       <label for="firstname">First Name</label>
@@ -15,7 +15,8 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <button class="btn btn-success" (click)="onEditUser()">Add User</button>
+      <button class="btn btn-success" (click)="onAddUser()">Add User</button>
+      <button class="btn btn-default" (click)="onGetAllUsers()">All Users</button>
     </div>
   </div>
 </form>

@@ -10,22 +10,39 @@ import { UserService } from '../user.service';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit, OnDestroy {
-  usersObservable: Observable<User[]>;
-  userSubscription: Subscription;
-  @Input() users: User[];
+  usersSubscription: Subscription;
+  users: User[];
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {
+    this.usersSubscription = this.userService.usersObservable.subscribe(
+      users => {
+        this.users = users;
+      }
+    );
+  }
 
   ngOnInit() {
-    //this.users = this.userService.users;
+    this.usersSubscription = this.userService.usersObservable.subscribe(
+      data => {
+        this.users = data;
+      },
+      error => {}
+    );
     this.onGetAllUsers();
     this.userService.getAllUsers();
-    this.userSubscription = this.userService.usersObservable.subscribe();
-    this.usersObservable = this.userService.usersObservable;
   }
 
   onEditUser(id: string) {
     console.info("editing user " + id);
+    this.usersSubscription.add(this.userService.getUser(id).subscribe(
+      data => {
+        console.info(data);
+        this.userService.selectedUser = <User>data;
+      },
+      error => {
+        console.error(error);
+      }
+    ));
   }
 
   onDeleteUser(id: string) {
@@ -43,17 +60,16 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   onGetAllUsers() {
     console.info("getting all users...");
-    this.userSubscription = this.userService.getAllUsers().subscribe(
+    this.userService.getAllUsers().subscribe(
       (data: any) => {
         this.userService.users = data;
         this.users = this.userService.users;
-        console.info(this.users);
       }
     );
   }
 
   ngOnDestroy() {
-    this.userSubscription.unsubscribe();
+    this.usersSubscription.unsubscribe();
   }
 
 }
