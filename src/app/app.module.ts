@@ -12,6 +12,7 @@ import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { HeaderComponent } from './header/header.component';
 
 import { UserService } from './users/user.service';
+import { ShortenPipe } from './shorten.pipe';
 
 @NgModule({
   declarations: [
@@ -19,11 +20,13 @@ import { UserService } from './users/user.service';
     UsersComponent,
     UserListComponent,
     UserEditComponent,
-    HeaderComponent
+    HeaderComponent,
+    ShortenPipe
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-<ul>
+<ul *ngIf="usersObservable | async as users else empty">
   <li class="userlist">
     <div class="row">
       <div class="col-md-2">ID</div>
@@ -10,7 +10,7 @@
   </li>
   <li class="userlist" *ngFor="let user of users; let i = index">
     <div class="row">
-      <div class="col-md-2">{{ user.id }}</div>
+      <div class="col-md-2">{{ user.id | shorten:10 }}</div>
       <div class="col-md-3">{{ user.firstname }}</div>
       <div class="col-md-3">{{ user.lastname }}</div>
       <div class="col-md-2">{{ user.username }}</div>

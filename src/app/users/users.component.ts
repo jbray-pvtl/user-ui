@@ -39,4 +39,9 @@ export class UsersComponent implements OnInit {
     return randomId;
   }
 
+  onGetAllUsers() {
+    console.info("getting all users...");
+    this.userService.getAllUsers();
+  }
+
 }
