@@ -13,6 +13,7 @@ import { HeaderComponent } from './header/header.component';
 
 import { UserService } from './users/user.service';
 import { ShortenPipe } from './shorten.pipe';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ShortenPipe } from './shorten.pipe';
     UserListComponent,
     UserEditComponent,
     HeaderComponent,
-    ShortenPipe
+    ShortenPipe,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

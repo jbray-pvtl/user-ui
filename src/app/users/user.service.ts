@@ -14,7 +14,7 @@ export class UserService {
   selectedUserSubject = new Subject<User>();
   selectedUserObservable = this.selectedUserSubject.asObservable();
   selectedUser: User;
-  rootURL = 'https://jbray-user.cfapps.io'; //'http://localhost:8080';
+  rootURL = 'https://jbray-user.cfapps.io'; //'http://localhost:8080'; 
 
   constructor(private httpClient: HttpClient) { }
 
