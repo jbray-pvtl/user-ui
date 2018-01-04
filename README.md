@@ -32,3 +32,9 @@ Add a new repository
 git remote add origin https://github.com/jrbrayjr2006/user-ui.git
 git push -u origin master
 ```
+
+## Deployment to Pivotal Cloud Foundry (PCF)
+Deploying this web UI to PCF is straight forward
+1. Build the application `ng build`
+2. Login to PCF `cf login`
+3. Push the application `cf push`
