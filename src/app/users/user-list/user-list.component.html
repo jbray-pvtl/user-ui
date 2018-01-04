@@ -14,7 +14,7 @@
       <div class="col-md-3">{{ user.firstname }}</div>
       <div class="col-md-3">{{ user.lastname }}</div>
       <div class="col-md-2">{{ user.username }}</div>
-      <div class="col-md-1"><button class="btn btn-warning" (click)="onEditUser(user.id)">Edit</button></div>
+      <div class="col-md-1"><button class="btn btn-warning" (click)="onEditUser(user.id, i)">Edit</button></div>
       <div class="col-md-1"><button class="btn btn-danger" (click)="onDeleteUser(user.id)">X</button></div>
     </div>
   </li>

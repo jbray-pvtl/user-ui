@@ -12,12 +12,16 @@ import { User } from '../user.model';
 export class UserEditComponent implements OnInit, OnDestroy {
   user: User;
   numberOfUsers: number;
-  firstname: string;
-  lastname: string;
-  username: string;
+  id = '';
+  firstname: string = null;
+  lastname: string = null;
+  username: string = null;
   usersSubscription: Subscription;
   users: User[];
   buttonLabel: string;
+  editMode = false;
+  selectedUser: User;
+  addEdit: string;
 
   constructor(private userService: UserService) {
     this.userService.usersObservable.subscribe(
@@ -37,7 +41,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.onGetAllUsers();
+    //this.onGetAllUsers();
     this.buttonLabel = 'Add User';
     this.numberOfUsers = this.userService.users.length;
     this.userService.getAllUsers();
@@ -49,18 +53,61 @@ export class UserEditComponent implements OnInit, OnDestroy {
         console.error(error);
       }
     );
+
+    this.userService.selectedUserSubject.subscribe(
+      user => {
+        this.selectedUser = <User>user;
+        this.id = user.id;
+        this.firstname = user.firstname;
+        this.lastname = user.lastname;
+        this.username = user.username;
+        console.info("in the edit component...");
+        console.info(this.selectedUser);
+      },
+      error => {
+        console.error(error);
+      }
+    );
+
+    this.userService.editModeSubject.subscribe(
+      editMode => {
+        this.editMode = editMode;
+      },
+      error => {
+        console.error(error);
+      }
+    );
   }
 
   /**
    * Send a request to the service to add a new user
    */
   onAddUser() {
+    if(this.editMode) {
+      console.info('onUpdateUser(...)...' + this.id);
+      this.userService.updateUser(this.id, this.firstname, this.lastname, this.username).subscribe(
+        data => {
+          this.users = this.onGetAllUsers();
+          this.userService.updateUsers(this.users);
+        },
+        error => {
+          console.error(error);
+        }
+      );
+      this.editMode = !this.editMode;
+      this.resetUser();
+      return;
+    }
     console.info('onAddUser()...');
     let id = this.generateRandomId();
     if(this.username === undefined || this.username === null) {
+      if(this.firstname == undefined || this.firstname == null) {
+        return;
+      }
       this.username = (this.firstname + this.lastname).toLowerCase();
     }
-    this.user = new User(id,this.firstname,this.lastname,this.username);
+    console.info("The first name is " + this.firstname);
+    this.user = new User(id, this.firstname, this.lastname, this.username);
     this.userService.addUser(this.firstname, this.lastname, this.username).subscribe(
       data => {
         console.info(data);
@@ -95,9 +142,12 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.usersSubscription.unsubscribe();
+    this.userService.selectedUserSubject.unsubscribe();
+    this.userService.editModeSubject.unsubscribe();
   }
 
   private resetUser() {
+    this.id = null;
     this.firstname = null;
     this.lastname = null;
     this.username = null;

@@ -12,9 +12,17 @@ export class UserService {
   usersObservable = this.usersSubject.asObservable();
   users: User[] = [];
   selectedUserSubject = new Subject<User>();
+
+  /**
+   * index passed from the user list
+   */
+  userIndex = new Subject<number>();
   selectedUserObservable = this.selectedUserSubject.asObservable();
   selectedUser: User;
-  rootURL = 'https://jbray-user.cfapps.io'; //'http://localhost:8080'; 
+  editMode = false;
+  editModeSubject = new Subject<boolean>();
+  //rootURL = 'https://jbray-user.cfapps.io'; //'http://localhost:8080';
+  rootURL = 'http://localhost:8080';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -31,6 +39,11 @@ export class UserService {
   getUser(id: string) {
     console.info("getUser(id)...");
     return this.httpClient.get(this.rootURL + '/user/' + id);
+  }
+
+  updateUser(id: string, fname: string, lname: string, uname: string) {
+    console.info('updateUser()...');
+    return this.httpClient.put(this.rootURL + '/user/' + id + '/' + fname + '/' + lname + '/' + uname, {});
   }
 
   getAllUsers() {

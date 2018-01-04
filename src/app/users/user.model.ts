@@ -1,6 +1,16 @@
 export class User {
 
-    constructor(private id: string, private firstname: string, private lastname: string, private username: string) {}
+    id: string;
+    firstname: string;
+    lastname: string;
+    username: string;
+
+    constructor(id: string, firstname: string, lastname: string, username: string) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+    }
 
     public getFirstname(): string {
         return this.firstname;

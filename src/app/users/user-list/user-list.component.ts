@@ -32,7 +32,11 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.userService.getAllUsers();
   }
 
-  onEditUser(id: string) {
+  /**
+   * This may never be used
+   * @param id 
+   */
+  onAddUser(id: string) {
     console.info("editing user " + id);
     this.usersSubscription.add(this.userService.getUser(id).subscribe(
       data => {
@@ -43,6 +47,14 @@ export class UserListComponent implements OnInit, OnDestroy {
         console.error(error);
       }
     ));
+  }
+
+  onEditUser(id: string, userIndex: number) {
+    console.info("editing user " + id);
+    this.userService.selectedUser = this.users[userIndex];
+    this.userService.selectedUserSubject.next(this.users[userIndex]);
+    this.userService.editModeSubject.next(true);
+    this.userService.editMode = true;
   }
 
   onDeleteUser(id: string) {
