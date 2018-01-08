@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
@@ -12,8 +13,16 @@ import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { HeaderComponent } from './header/header.component';
 
 import { UserService } from './users/user.service';
+import { AuthenticateService } from './authenticate.service';
 import { ShortenPipe } from './shorten.pipe';
 import { FooterComponent } from './footer/footer.component';
+import { LoginComponent } from './login/login.component';
+
+const appRoutes: Routes = [
+  { path: '', redirectTo: '/users', pathMatch: 'full'},
+  { path: 'login', component: LoginComponent },
+  { path: 'users', component: UsersComponent }
+];
 
 @NgModule({
   declarations: [
@@ -23,14 +32,17 @@ import { FooterComponent } from './footer/footer.component';
     UserEditComponent,
     HeaderComponent,
     ShortenPipe,
-    FooterComponent
+    FooterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes)
   ],
-  providers: [UserService],
+  providers: [UserService, AuthenticateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
