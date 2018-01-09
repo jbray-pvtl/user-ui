@@ -10,6 +10,30 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
+## Bootstrap Styling and Functionality Dependencies
+Add the following dependencies to the project using the npm utility.
+
+```
+npm install --save jquery
+npm install --save popper.js
+npm install --save tether
+npm install --save bootstrap@4.0.0-beta.2
+```
+
+Edit the .angular-cli.json file to include the new CSS dependencies:
+```
+"styles": [
+"../node_modules/bootstrap/dist/css/bootstrap.min.css",
+"styles.css"
+],
+"scripts": [
+"../node_modules/jquery/dist/jquery.min.js",
+"../node_modules/popper.js/dist/popper.min.js",
+"../node_modules/tether/dist/js/tether.min.js",
+"../node_modules/bootstrap/dist/js/bootstrap.min.js"
+],
+```
+
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
